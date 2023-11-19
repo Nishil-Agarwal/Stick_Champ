@@ -79,12 +79,20 @@ public class Main extends Application {
         stage.show();
     }
 
+    public void initializeobjs() throws FileNotFoundException {
+        this.player=new Player();
+        this.mount0=new Mountain(0);
+        this.mount1=new Mountain(200);
+        this.mount2=new Mountain(450);
+        this.mount3=new Mountain(600);
+    }
     public void addobjs(Scene scene) throws FileNotFoundException {
-        player=new Player();
-        mount0=new Mountain(0);
-        mount1=new Mountain(200);
-        mount2=new Mountain(450);
-        mount3=new Mountain(600);
+//        player=new Player();
+//        mount0=new Mountain(0);
+//        mount1=new Mountain(200);
+//        mount2=new Mountain(450);
+//        mount3=new Mountain(600);
+        initializeobjs();
 
         Pane root=(Pane)scene.getRoot();
 
@@ -96,6 +104,10 @@ public class Main extends Application {
 
     }
 
+    public void generatecherry(){}
+    public void generatemountains(){}
+    public void revive(){}
+
     @Override
     public void start(Stage primarystage) throws IOException, InterruptedException {
         this.stage=primarystage;
@@ -105,6 +117,7 @@ public class Main extends Application {
 //        mount2=new Mountain(450);
 //        mount3=new Mountain(600);
 //        //Player player2=new Player();
+//        initializeobjs();
 
         FXMLLoader loadhome = new FXMLLoader(getClass().getResource("StartScene.fxml"));
         Pane roothome = loadhome.load();
@@ -200,12 +213,26 @@ public class Main extends Application {
             }
             //return;
         }
+
+        public void falldown(){}
+        public void reviving_ritual(){}
+        public void cherrygained(){}
+        public void coinsgained(){}
+        public void setscore(){}
+    }
+    
+    public class Redtarget{
+        private final int height=3;
+        private final int length=5;
+        private Rectangle target;
+        public Redtarget(){}
     }
 
     public class Mountain {
         private int baseHeight = 240;
         private int baseWidth = 80;
         private Rectangle mountain;
+        private Redtarget target;
 
         public Mountain(int xCoord) {
             mountain = new Rectangle(xCoord, 260, baseWidth, baseHeight);
@@ -217,7 +244,9 @@ public class Main extends Application {
                 e.printStackTrace();
             }
         }
-
+        
+        public void createtarget(){}
+        public void gettarget(){}
         public Rectangle getmount() {
             return this.mountain;
         }
@@ -237,12 +266,15 @@ public class Main extends Application {
         public Rectangle getstick(){
             return this.stick;
         }
+
+        public void setskin(){}
     }
 
-    public class cherries{
+    public class Cherry{
         private final int lenght=20;
         private final int width=20;
         private Rectangle cherry;
+        public Cherry(){}
         private int rarity_calc(int score){return 0;}
         private void setvisibility(){};
     }
