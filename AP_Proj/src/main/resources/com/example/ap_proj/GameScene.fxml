@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="325.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ap_proj.Main">
+    <children>
+      <ImageView fitHeight="350.0" fitWidth="600.0" layoutX="1.0" layoutY="1.0" opacity="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@projimg.jpg" />
+         </image>
+      </ImageView>
+        <Button layoutX="26.0" layoutY="34.0" mnemonicParsing="false" onAction="#switchToEndScene" text="PAUSE">
+         <font>
+            <Font name="Arial Black" size="16.0" />
+         </font></Button>
+      <Label layoutX="465.0" layoutY="40.0" text="SCORE: 100" textFill="#fcfafa">
+         <font>
+            <Font name="Arial Black" size="16.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>
