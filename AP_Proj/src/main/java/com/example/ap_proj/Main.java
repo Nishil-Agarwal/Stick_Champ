@@ -220,10 +220,10 @@ public class Main extends Application {
         public void coinsgained(){}
         public void setscore(){}
     }
-    
+
     public class Redtarget{
-        private final int height=3;
-        private final int length=5;
+        private final int HEIGHT=3;
+        private final int LENGTH=5;
         private Rectangle target;
         public Redtarget(){}
     }
@@ -244,7 +244,7 @@ public class Main extends Application {
                 e.printStackTrace();
             }
         }
-        
+
         public void createtarget(){}
         public void gettarget(){}
         public Rectangle getmount() {
@@ -253,7 +253,7 @@ public class Main extends Application {
     }
 
     public class Stick{
-        private final int width =5;
+        private final int WIDTH =5;
         private int length;
         private Rectangle stick;
         private ImageView skin;
@@ -271,8 +271,8 @@ public class Main extends Application {
     }
 
     public class Cherry{
-        private final int lenght=20;
-        private final int width=20;
+        private final int LENGTH=20;
+        private final int WIDTH=20;
         private Rectangle cherry;
         public Cherry(){}
         private int rarity_calc(int score){return 0;}
