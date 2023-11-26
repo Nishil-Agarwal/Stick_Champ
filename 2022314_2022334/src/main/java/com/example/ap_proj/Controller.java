@@ -2,6 +2,7 @@ package com.example.ap_proj;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -27,7 +28,8 @@ public class Controller {
     private Boolean key_pressed=false;
     private Stick stick;
 
-    public void exit(ActionEvent event){
+    @FXML
+    private void exit(ActionEvent event){
         Alert alert =new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit");
         alert.setHeaderText("You're about to exit the Game");
@@ -39,7 +41,8 @@ public class Controller {
         }
     }
 
-    public void switchToStartScene(ActionEvent event) throws IOException {
+    @FXML
+    private void switchToStartScene(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("StartScene.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -47,7 +50,8 @@ public class Controller {
         stage.show();
     }
 
-    public void switchToEndScene(ActionEvent event) throws IOException {
+    @FXML
+    private void switchToEndScene(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("EndScene.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -55,7 +59,8 @@ public class Controller {
         stage.show();
     }
 
-    public void switchToGameScene(ActionEvent event) throws IOException {
+    @FXML
+    private void switchToGameScene(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("GameScene.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         add_objects_to_pane(root);
@@ -109,7 +114,7 @@ public class Controller {
         stage.show();
     }
 
-    public void add_objects_to_pane(Pane root) throws FileNotFoundException {
+    private void add_objects_to_pane(Pane root) throws FileNotFoundException {
         this.player = new Player();
         this.basemount = new Mountain(0,90);
         this.targetmount = new Mountain(-1,-1);     //If -1 passed randomise
