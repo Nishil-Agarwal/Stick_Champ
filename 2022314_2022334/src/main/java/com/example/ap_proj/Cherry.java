@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import static java.lang.Math.pow;
+import java.util.Random;
 
 public class Cherry{
     private final int HEIGHT=35;
@@ -21,10 +21,27 @@ public class Cherry{
     }
 
     private double rarity_calc(int score){
-        return (100/(pow(3,-score)));
+        if (score>750){
+            return 10;
+        }else if(score<150){
+            return 50;
+        }else{
+            return 65-score/11;
+        }
     }
 
-    public ImageView generate_cherry(){
+    private ImageView generate_cherry(){
+        this.cherry.setX(new Random().nextInt(100,600));
+        this.cherry.setY(210+(new Random().nextInt(0,1))*42);
         return this.cherry;
+    }
+
+    public ImageView try_generation(int score){
+        double chance=rarity_calc(score);
+        double number=new Random().nextDouble(0,100);
+        if (number>chance){
+            return generate_cherry();
+        }
+        return null;                       //Handle in controller code
     }
 }
