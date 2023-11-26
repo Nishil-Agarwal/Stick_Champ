@@ -1,7 +1,6 @@
 package com.example.ap_proj;
 
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +12,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,6 +22,7 @@ import javafx.util.Duration;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Thread.sleep;
 
@@ -34,6 +32,7 @@ public class Main extends Application {
     //just generate new scene by saved score etc. once code is completed and user presses any buttons that require to go back to gamescene
     private Player player;
     private Mountain mount0;
+    private Boolean pressed=false;
     private Mountain mount1;
     private Mountain mount2;
     private Mountain mount3;
@@ -41,15 +40,6 @@ public class Main extends Application {
     private Stick mystick;
     private long stickstart;
     private long endtime;
-
-    public void switchToGameScene(ActionEvent event) throws IOException {
-        Pane root = FXMLLoader.load(getClass().getResource("GameScene.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene scenenew= new Scene(root, 600, 325);
-        addobjs(scenenew);
-        stage.setScene(scenenew);
-        stage.show();
-    }
 
     public void switchToStartScene(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("StartScene.fxml"));
@@ -86,6 +76,79 @@ public class Main extends Application {
         this.mount2=new Mountain(450);
         this.mount3=new Mountain(600);
     }
+
+    public void switchToGameScene(ActionEvent event) throws IOException {
+        Pane root = FXMLLoader.load(getClass().getResource("GameScene.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scenenew= new Scene(root, 600, 325);
+        addobjs(scenenew);
+//        scenenew.setOnMousePressed(e -> {
+//            if (e.isPrimaryButtonDown()){
+//                stickstart=System.currentTimeMillis();
+//            }
+//        });
+//
+//        scenenew.setOnMouseReleased(e->{
+//            endtime=System.currentTimeMillis();
+//            Point2D playercoords=player.getplyr().localToScene(player.getplyr().getLayoutX(), player.getplyr().getLayoutY());
+//            double xcoord = playercoords.getX();
+//            double ycoord = playercoords.getY();
+//            try {
+//                mystick=new Stick(xcoord,ycoord,(int)(endtime-stickstart)/8,player);
+//            } catch (InterruptedException ex) {
+//                throw new RuntimeException(ex);
+//            }
+//            root.getChildren().add(mystick.getstick());
+//        });
+
+        AnimationTimer stickgen = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (pressed){
+                    try {
+                        mystick.incrementsize();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        };
+
+        scenenew.setOnMousePressed(e->{
+            endtime=System.currentTimeMillis();
+            Point2D playercoords=player.getplyr().localToScene(player.getplyr().getLayoutX(), player.getplyr().getLayoutY());
+            double xcoord = playercoords.getX();
+            double ycoord = playercoords.getY();
+            try {
+                mystick=new Stick(xcoord,ycoord,player);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+            root.getChildren().add(mystick.getstick());
+            pressed=true;
+            stickgen.start();
+        });
+
+        scenenew.setOnMouseReleased(e->{
+            pressed=false;
+            stickgen.stop();
+            mystick.rotate();
+        });
+
+        scenenew.setOnKeyReleased(e -> {
+            switch (e.getCode()) {
+                case S:
+                    player.flip();
+                    break;
+                case J:
+                    player.move();
+                    break;
+            }
+        });
+        stage.setScene(scenenew);
+        stage.show();
+    }
+
     public void addobjs(Scene scene) throws FileNotFoundException {
 //        player=new Player();
 //        mount0=new Mountain(0);
@@ -254,15 +317,44 @@ public class Main extends Application {
 
     public class Stick{
         private final int WIDTH =5;
-        private int length;
+        private int length=0;
         private Rectangle stick;
         private ImageView skin;
-        public Stick(double playerxcoord,double playerycoord,int length,Player player){
-            this.length=length;
-            stick = new Rectangle(playerxcoord+70,playerycoord+255,length, WIDTH);
+        public Stick(double playerxcoord,double playerycoord,Player player) throws InterruptedException {
+            //this.length=length;
+            stick = new Rectangle(playerxcoord+70,playerycoord+255, WIDTH,0);
             this.stick.setFill(Color.DARKORANGE);
+//            Timeline stickgen = new Timeline();
+//            for (int i=0; i<this.length; i+=10){
+//                int l= i+10;
+//                KeyFrame lengthincrement = new KeyFrame(Duration.millis(i*10), e ->{
+//                    stick.setHeight(l);
+//                    stick.setY(stick.getY()-10);
+//                });
+//                stickgen.getKeyFrames().add(lengthincrement);
+//            }
+//            stickgen.setOnFinished(e->{
+//                rotate();
+//            });
+//            stickgen.play();
         }
 
+        public void incrementsize() throws InterruptedException {
+            this.length+=10;
+            stick.setHeight(stick.getHeight()+10);
+            stick.setY(stick.getY()-10);
+            stick.setX(stick.getX());
+            sleep(100);
+        }
+        public void rotate(){
+            TranslateTransition trans = new TranslateTransition(Duration.millis(1000),this.stick);
+            trans.setByY((double)this.length/2+3);
+            trans.setByX((double)this.length/2+5);
+            RotateTransition rot = new RotateTransition(Duration.millis(1000),this.stick);
+            rot.setByAngle(90);
+            rot.play();
+            trans.play();
+        }
         public Rectangle getstick(){
             return this.stick;
         }
