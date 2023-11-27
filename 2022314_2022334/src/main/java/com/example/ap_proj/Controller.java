@@ -67,6 +67,40 @@ public class Controller {
         scene = new Scene(root,600,325);
 
         //For growing stick when mouse held :
+         int space=200;
+        this.basemount = new Mountain(150,90);
+        this.targetmount = new Mountain(400,90);
+
+        Group gr1 = new Group();
+        gr1.getChildren().addAll(basemount.getmountain(), basemount.gettarget().gettarget());
+        root.getChildren().add(gr1);
+
+        Group gr2 = new Group();
+        gr2.getChildren().addAll(targetmount.getmountain(), targetmount.gettarget().gettarget());
+        root.getChildren().add(gr2);
+
+        TranslateTransition mountainAnimation1 = new TranslateTransition(Duration.seconds(4), gr1);
+        mountainAnimation1.setByX(-500); // Adjust the distance based on your needs
+        mountainAnimation1.setCycleCount(1); // Repeat indefinitely
+        mountainAnimation1.play();
+
+        TranslateTransition mountainAnimation2 = new TranslateTransition(Duration.seconds(4), gr2);
+        mountainAnimation2.setByX(-250); // Adjust the distance based on your needs
+        mountainAnimation2.setCycleCount(1); // Repeat indefinitely
+        mountainAnimation2.play();
+        this.basemount=this.targetmount;
+        int width=random.nextInt(40,180);
+
+        this.targetmount = new Mountain(900,width);
+        Group gr3 = new Group();
+        gr3.getChildren().addAll(targetmount.getmountain(), targetmount.gettarget().gettarget());
+        root.getChildren().add(gr3);
+
+        TranslateTransition mountainAnimation3 = new TranslateTransition(Duration.seconds(4), gr3);
+        mountainAnimation3.setByX(-500); // Adjust the distance based on your needs
+        mountainAnimation3.setCycleCount(1); // Repeat indefinitely
+        mountainAnimation3.play();
+        
         AnimationTimer stick_generating_animation = new AnimationTimer() {
             @Override
             public void handle(long num) {
