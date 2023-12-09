@@ -1,6 +1,9 @@
 package com.example.ap_proj;
 
-import javafx.animation.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,6 +18,15 @@ import java.io.FileNotFoundException;
 import static java.lang.Thread.sleep;
 
 public class Player{
+    public void setMove_complete(int move_complete) {
+        this.move_complete = move_complete;
+    }
+
+    public int getMove_complete() {
+        return move_complete;
+    }
+
+    private int move_complete=0;
     private final int height = 60;
     private final int width = 50;
     private ImageView sprite_image;
@@ -22,12 +34,11 @@ public class Player{
 
     private Label incremented;
     private Label totalsc1;
-    private Label cherries1;
     private int score;
     private int cherries;
 
     Player() throws FileNotFoundException {
-        Image character=new Image(new FileInputStream("src\\main\\resources\\com\\example\\ap_proj\\Stickman.png"));
+        Image character=new Image(new FileInputStream("/Users/namitgupta/Downloads/AP_Project-main/2022314_2022334/src/main/resources/com/example/ap_proj/Stickman.png"));
         sprite_image = new ImageView(character);
         sprite_image.setFitHeight(this.height);
         sprite_image.setFitWidth(this.width);
@@ -39,28 +50,10 @@ public class Player{
         return this.sprite_image;
     }
 
-    public void move(double distance,int target_mountain_start, int target_mountain_finish,double red_target_start,Cherry cherry){
+    public void move(double distance,int target_mountain_start, int target_mountain_finish,double red_target_start){
         TranslateTransition movepath = new TranslateTransition(Duration.millis(distance*9), this.sprite_image);
         movepath.setByX(distance+40);
-
-        AnimationTimer cherry_check_timer= new AnimationTimer(){
-            @Override
-            public void handle(long l) {
-                if (cherry.getvisibility()!=0){
-                    double sprite_xcoord = sprite_image.localToScene(sprite_image.getLayoutX(), sprite_image.getLayoutY()).getX();
-                    if (sprite_xcoord>cherry.getxcoord() && sprite_xcoord<(cherry.getxcoord()+45)){
-                        if (cherry.getycoord()==502 && flipped || cherry.getycoord()==460 && !flipped){
-                            cherry.cherry_collected();
-                            cherries+=1;
-                            setCherries_onboard();
-                        }
-                    }
-                }
-            }
-        };
-
         movepath.setOnFinished(checkfall->{
-            cherry_check_timer.stop();
             double top_left_xcoord=sprite_image.localToScene(sprite_image.getLayoutX(), sprite_image.getLayoutY()).getX();
             double xcoord=top_left_xcoord+10+sprite_image.getX();
 //            System.out.println(distance);
@@ -73,12 +66,14 @@ public class Player{
                 if (xcoord>red_target_start && xcoord<(red_target_start+12)){
                     try {
                         moveback(90);
+                        move_complete=1;
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 }else{
                     try {
                         moveback(40);
+                        move_complete=1;
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -86,7 +81,6 @@ public class Player{
             }
         });
         movepath.play();
-        cherry_check_timer.start();
     }
 
     public void flip() {
@@ -121,15 +115,15 @@ public class Player{
         edge.setByX(10);
         edge.play();
         edge.setOnFinished(e->{
-            RotateTransition fall=new RotateTransition(Duration.millis(500),this.sprite_image);
+            RotateTransition fall=new RotateTransition(Duration.millis(700),this.sprite_image);
             fall.setByAngle(90);
             if (!flipped){
-                TranslateTransition falling = new TranslateTransition(Duration.millis(500), this.sprite_image);
+                TranslateTransition falling = new TranslateTransition(Duration.millis(2000), this.sprite_image);
                 falling.setByY(200);
                 fall.play();
                 falling.play();
             }else{
-                TranslateTransition flipping = new TranslateTransition(Duration.millis(500), this.sprite_image);
+                TranslateTransition flipping = new TranslateTransition(Duration.millis(2000), this.sprite_image);
                 flipping.setByY(160);
                 flipping.play();
             }
@@ -184,28 +178,7 @@ public class Player{
         FadeTransition fade=new FadeTransition(Duration.millis((700)),totalsc1);
         fade.setOnFinished(e->{
             root.getChildren().remove(incremented);
-            try {
-                sleep(500);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
-            //code for mountain move
         });
         fade.play();
     }
-
-    public void setCherries_onboard(){
-        Pane root=((Pane)(this.sprite_image.getScene().getRoot()));
-        root.getChildren().remove(cherries1);
-
-        this.cherries1=new Label(String.valueOf(this.cherries));
-
-        cherries1.setFont(Font.font("Arial Black",16));
-        cherries1.setTextFill(Color.WHITE);
-        cherries1.setLayoutX(59);
-        cherries1.setLayoutY(40);
-
-        root.getChildren().add(cherries1);
-    }
-
 }
