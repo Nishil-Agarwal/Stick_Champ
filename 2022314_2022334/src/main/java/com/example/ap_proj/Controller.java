@@ -250,7 +250,7 @@ public class Controller {
     }
 
     private void add_objects_to_pane(Pane root) throws IOException {
-        this.player = new Player();
+        this.player = Player.getInstance();
         this.basemount = new Mountain(0,70);
         this.targetmount = new Mountain(-1,-1);     //If -1 passed randomise
         cherry=new Cherry();
