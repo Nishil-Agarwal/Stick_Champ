@@ -49,6 +49,13 @@ public class Stick{
     public double getlength(){
         return this.height;
     }
+    public int checkfall(double height, int x,int width){
+        double checklength=20+height;
+        if(checklength>=x && checklength<=x+width){
+            return 1;
+        }
+        return 0;
+    }
 
     public void setskin(){}
 }
