@@ -14,8 +14,11 @@ import java.io.IOException;
 public class Main extends Application {
     private Pane home;
     private Scene home_screen;
+    private MusicController musicControl;
     @Override
     public void start(Stage primarystage) throws IOException{
+        musicControl=new MusicController();
+        musicControl.music();
         Result result = JUnitCore.runClasses(StickTest.class);
         for(Failure failure: result.getFailures()){
             System.out.println(failure.toString());
