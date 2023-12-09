@@ -1,9 +1,11 @@
 package com.example.ap_proj;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,7 +41,15 @@ public class Controller {
     private Pane root;
 
     private Player player;
-    private Cherry cherry;
+
+    public void setTargetmount(Mountain targetmount) {
+        this.targetmount = targetmount;
+    }
+
+    public void setBasemount(Mountain basemount) {
+        this.basemount = basemount;
+    }
+
     private Mountain basemount;
     private Mountain targetmount;
     private Boolean key_pressed=false;
@@ -95,6 +106,40 @@ public class Controller {
                 }
             }
         };
+        AnimationTimer mountain_generating_animation = new AnimationTimer() {
+            @Override
+            public void handle(long num) {
+                if (player.getMove_complete()==1){
+                    try {
+                        Group gr1 = new Group();
+                        gr1.getChildren().addAll(targetmount.getmountain(), targetmount.gettarget().getrect());
+                        root.getChildren().add(gr1);
+
+
+                        TranslateTransition mountainAnimation1 = new TranslateTransition(Duration.seconds(3), gr1);
+                        mountainAnimation1.setByX(1000); // Adjust the distance based on your needs
+                        mountainAnimation1.setCycleCount(1); // Repeat indefinitely
+                        mountainAnimation1.play();
+                        System.out.println("m");
+                        Mountain t= new Mountain(-1,-1);
+                        System.out.println(t.getXcoord());
+                        setTargetmount(t);
+
+//                        Group gr2 = new Group();
+//                        gr2.getChildren().addAll(targetmount.getmountain(), targetmount.gettarget().getrect());
+//                        root.getChildren().add(gr2);
+//
+//                        TranslateTransition mountainAnimation2 = new TranslateTransition(Duration.seconds(3), gr2);
+//                        mountainAnimation2.setByX(t.getXcoord()); // Adjust the distance based on your needs
+//                        mountainAnimation2.setCycleCount(1); // Repeat indefinitely
+//                        mountainAnimation2.play();
+
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        };
 
         scene.setOnMousePressed(press->{
             //Creating stick object :
@@ -114,13 +159,14 @@ public class Controller {
             //Stick size growing starts :
             key_pressed=true;
             stick_generating_animation.start();
+            mountain_generating_animation.start();
         });
 
         scene.setOnMouseReleased(press->{
             //Stopping the stick growth + making it fall down + making character move to end of stick
             key_pressed=false;
             stick_generating_animation.stop();
-            stick.rotate(player,targetmount.getMountainStart(),targetmount.getMountainWidth(), targetmount.gettarget().start_xcoord(),this.cherry);
+            stick.rotate(player,targetmount.getMountainStart(),targetmount.getMountainWidth(), targetmount.gettarget().start_xcoord());
         });
 
         scene.setOnKeyReleased(key->{
@@ -137,7 +183,7 @@ public class Controller {
         this.player = new Player();
         this.basemount = new Mountain(0,70);
         this.targetmount = new Mountain(-1,-1);     //If -1 passed randomise
-        cherry=new Cherry();
+        Cherry cherry=new Cherry();
         ImageView result = cherry.try_generation(0,targetmount.getMountainStart());
 
 
