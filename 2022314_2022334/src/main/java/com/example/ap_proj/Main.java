@@ -1,5 +1,9 @@
 package com.example.ap_proj;
 
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,6 +16,11 @@ public class Main extends Application {
     private Scene home_screen;
     @Override
     public void start(Stage primarystage) throws IOException{
+        Result result = JUnitCore.runClasses(StickTest.class);
+        for(Failure failure: result.getFailures()){
+            System.out.println(failure.toString());
+        }
+        System.out.println(result.wasSuccessful());
         FXMLLoader template = new FXMLLoader(getClass().getResource("StartScene.fxml"));
         home = template.load();
         home_screen = new Scene(home,600,600);
