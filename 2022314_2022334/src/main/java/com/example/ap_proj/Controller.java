@@ -117,13 +117,14 @@ public class Controller {
 
 
                         TranslateTransition mountainAnimation1 = new TranslateTransition(Duration.seconds(3), gr1);
-                        mountainAnimation1.setByX(1000); // Adjust the distance based on your needs
+                        mountainAnimation1.setByX(-1000); // Adjust the distance based on your needs
                         mountainAnimation1.setCycleCount(1); // Repeat indefinitely
                         mountainAnimation1.play();
                         System.out.println("m");
                         Mountain t= new Mountain(-1,-1);
                         System.out.println(t.getXcoord());
                         setTargetmount(t);
+                        player.setMove_complete(0);
 
 //                        Group gr2 = new Group();
 //                        gr2.getChildren().addAll(targetmount.getmountain(), targetmount.gettarget().getrect());
