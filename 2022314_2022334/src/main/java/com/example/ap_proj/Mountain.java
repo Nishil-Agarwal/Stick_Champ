@@ -49,6 +49,10 @@ public class Mountain {
         return this.target;
     }
 
+    public int getXcoord() {
+        return xcoord;
+    }
+
     public class Redtarget{
         private final int HEIGHT=5;
         private final int WIDTH=12;
