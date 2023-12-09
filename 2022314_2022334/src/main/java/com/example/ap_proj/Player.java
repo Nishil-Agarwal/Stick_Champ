@@ -31,7 +31,16 @@ public class Player{
     private int dead;
     private final Streams stream=new Streams();
 
-    Player() throws IOException {
+    private static Player player= null;
+
+    public static Player getInstance() throws FileNotFoundException {
+        if(player==null){
+            player= new Player();
+        }
+        return player;
+    }
+
+    private Player() throws IOException {
         Image character=new Image(new FileInputStream("src\\main\\resources\\com\\example\\ap_proj\\Stickman.png"));
         this.score=stream.readScore();
         this.cherries=stream.readCherry();
