@@ -32,3 +32,11 @@ On first run it shows compete implementation of game. Though have some bugs in t
 
 Commands to run the code
 1. mvn clean javafx:run
+
+
+
+If any issue arises in rendering of images please replace the following paths
+1. Cherry. Java (line -23) with Cherry.png
+2. Player .Java (line -44) with Stickman.png
+3. Player .Java (line -72) with Stickman.png
+
