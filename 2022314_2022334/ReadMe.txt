@@ -23,3 +23,7 @@ Game use options:
 Mouse : stick extend
 "S" : Flip option
 Click on any button to select it
+
+
+Commands to run the code
+1. mvn clean javafx:run
