@@ -24,6 +24,11 @@ Mouse : stick extend
 "S" : Flip option
 Click on any button to select it
 
+Run StickTest.java to see the implementation of JUnit Test Cases.
+Singleton Design Pattern used in Player Class as only one object was needed.
+Decorator Design Patter used in Read and Write File Methods in Streams Class to read and write from score and cherry txt files.
+Avoid using Restart and Start Game Method once the Game is running.
+On first run it shows compete implementation of game. Though have some bugs in the implementation of Restart Button.
 
 Commands to run the code
 1. mvn clean javafx:run
