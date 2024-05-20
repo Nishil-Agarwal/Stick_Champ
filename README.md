@@ -1,5 +1,3 @@
-Sec - B
-Group Number - 57
 Members:
 1- Nishil Agarwal : 2022334
 2- Namit Gupta : 2022314
